@@ -2,11 +2,15 @@ name: build
 
 on:
   push:
+    tags:
+      - v*
     branches: [ main ]
   pull_request:
     branches: [ main ]
   workflow_run:
     workflows: [ "golangci-lint" ]
+    types:
+      - completed
 
 defaults:
   run:
