@@ -50,13 +50,12 @@ jobs:
           
       - name: Create DB schema
         run: |
-          psql -h postgres -U postgres -h postgres -d testapp_db < ../assets/schema.sql
+          psql -h postgres -U postgres -h localhost -d testapp_db < ../assets/schema.sql
         env:
           PGPASSWORD: postgres
           
       - name: Run tests
         run: |
-          sed -i 's/localhost/postgres/' .env
           go test -v
 
           
