@@ -1,9 +1,4 @@
 name: build
-env:
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
-  POSTGRES_DATABASE: testapp_db
-  POSTGRES_PORT: 5432
 
 on:
   push:
@@ -27,6 +22,11 @@ jobs:
     services:
       postgres:
         image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DATABASE: testapp_db
+          POSTGRES_PORT: 5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -35,7 +35,7 @@ jobs:
         ports:
           - 5432:5432
 
-    steps:         
+    steps:
       - name: Check out repository code
         uses: actions/checkout@v2
         
@@ -54,6 +54,11 @@ jobs:
           createdb ${{ env.POSTGRES_DATABASE }}
           psql -U ${{ env.POSTGRES_USER }} -h localhost -d ${{ env.POSTGRES_DATABASE }} < ../assets/schema.sql
         env:
+          env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DATABASE: testapp_db
+          POSTGRES_PORT: 5432
           PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
           
       - name: Run tests
