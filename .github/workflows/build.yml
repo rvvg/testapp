@@ -60,7 +60,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DATABASE: testapp_db
           POSTGRES_PORT: 5432
-          PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          PGPASSWORD: postgres
           
       - name: Run tests
         run: |
