@@ -51,6 +51,7 @@ jobs:
           
       - name: Create DB schema
         run: |
+          psql -U ${{ env.POSTGRES_USER }} -h localhost -c 'CREATE DATABASE "${{ env.POSTGRES_DATABASE }}";'
           createdb -U ${{ env.POSTGRES_USER }} -h localhost ${{ env.POSTGRES_DATABASE }}
           psql -U ${{ env.POSTGRES_USER }} -h localhost -d ${{ env.POSTGRES_DATABASE }} < ../assets/schema.sql
         env:
