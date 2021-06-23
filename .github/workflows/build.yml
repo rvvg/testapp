@@ -67,6 +67,7 @@ jobs:
 
   build-and-push:
     runs-on: ubuntu-latest
+    needs: [test]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -80,6 +81,8 @@ jobs:
         with:
           push: true
           tags: vrekshta/testapp:latest
+          context: ./app
+          
     
         
         
