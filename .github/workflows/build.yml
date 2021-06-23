@@ -72,16 +72,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
         
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: vrekshta/testapp
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
         
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
@@ -95,16 +88,15 @@ jobs:
         with:
           context: ./app
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: vrekshta/app:${{ steps.get_version.outputs.VERSION }}
+
           
       - name: Push Docs Image to Docker Hub
         uses: docker/build-push-action@v2
         with:
           context: ./docs
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: vrekshta/docs:${{ steps.get_version.outputs.VERSION }}
           
     
         
