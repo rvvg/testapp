@@ -12,7 +12,7 @@ import (
 )
 
 func setupTestPool() *pgxpool.Pool {
-	err := godotenv.Load("../.env")
+	err := godotenv.Load("./.env")
 	if err != nil {
 		log.Print("Error loading .env file")
 	}
