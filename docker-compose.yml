@@ -15,7 +15,7 @@ services:
   docs:
     image: vrekshta/docs:${version}
     ports:
-      - 8888:80
+      - 80:80
 
   db:
     image: postgres:13-alpine
