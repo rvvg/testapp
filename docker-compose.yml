@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
    
 services:
 
@@ -7,8 +7,8 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./app/.env:/.env:z
-    depend_on:
+      - ./app/.env.compose:/.env:z
+    depends_on:
       db:
         condition: service_healthy
 
