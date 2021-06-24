@@ -7,24 +7,32 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - type: bind
-        source: ./app/.env
-        target: /.env
+      - ./app/.env:/.env:z
+    depend_on:
+      db:
+        condition: service_healthy
 
   docs:
     image: vrekshta/docs:${version}
+    ports:
+      - 8888:80
 
   db:
     image: postgres:13-alpine
     volumes:
       - app_db_vol:/var/lib/postgresql/data
-      - ./assets/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./assets/schema.sql:/docker-entrypoint-initdb.d/schema.sql:z
     environment:
-      - POSTGRES_DB=testapp_db
+      - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
       - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   app_db_vol:

@@ -5,15 +5,16 @@ WORKDIR /app
 COPY go.mod .
 COPY go.sum .
 
-RUN go mod download
+RUN go mod graph | awk '{if ($1 !~ "@") print $2}' | xargs go get
+#RUN go mod download
 
 COPY *.go .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -v -o /main .
+RUN CGO_ENABLED=0 GOOS=linux go build -v -o /app/main .
 
 FROM gcr.io/distroless/static
 
-COPY --from=builder /main .
+COPY --from=builder /app/main /
 
 EXPOSE 8080
 
